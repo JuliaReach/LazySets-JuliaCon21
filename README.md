@@ -1,4 +1,4 @@
-# LazySets.jl: Scalable Symbolic-Numeric Set Computations
+# [LazySets.jl](https://github.com/JuliaReach/LazySets.jl): Scalable Symbolic-Numeric Set Computations
 
 by [Marcelo Forets](https://github.com/mforets) (Universidad de la República, Uruguay) and
 [Christian Schilling](https://github.com/schillic) (University of Konstanz, Germany)*
