@@ -3,7 +3,7 @@
 by [Marcelo Forets](https://github.com/mforets) (Universidad de la República, Uruguay) and
 [Christian Schilling](https://github.com/schillic) (University of Konstanz, Germany)*
 
-* Both authors contributed equally.
+**Both authors contributed equally.*
 
 ## Article
 
