@@ -1,0 +1,213 @@
+\appendix
+\section{How to install LazySets.jl}\label{sec:installation}
+
+To use LazySets, first install Julia version v1.3 or higher\footnote{Julia binaries can be downloaded from \href{the official website}{https://julialang.org/downloads/}}. LazySets is a registered Julia package, and as such, you can install it by activating the \code{pkg} mode (type \code{]}, and to leave it, type \code{<backspace>}),
+followed by
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+pkg> add LazySets
+\end{lstlisting}
+\end{minipage}
+To load the package in a Julia session, do \code{using}, e.g.
+
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+julia> using LazySets
+
+julia> HalfSpace([1.0, 0.0], 1.0)
+HalfSpace{Float64, Vector{Float64}}([1.0, 0.0], 1.0)
+	\end{lstlisting}
+\end{minipage}
+
+The LazySets reference manual is available online at
+\href{https://juliareach.github.io/LazySets.jl/dev/}{https://juliareach.github.io/LazySets.jl/dev/}.
+
+\section{Mathematical definitions}\label{sec:mathdef}
+
+\subsection{Compact convex sets}\label{sec:convexdef}
+
+Given a set $\X \subseteq \R^n$, its \emph{convex hull} is defined as
+%
+\[
+	\CH(\X) = \left\{ \lambda \cdot x + (1 - \lambda) \cdot y ~\middle|~ x, y \in \X, \lambda \in [0, 1] \subseteq \R \right\}.
+\]
+
+A set $\X$ is \emph{convex} if it coincides with its convex hull.
+%
+A set is \emph{closed} if it contains all its boundary points.
+%
+A set $\X$ is \emph{bounded} if there exists a $\delta \in \R$ such that for all $x, y \in \X$ it holds that $\Vert x - y \Vert \leq \delta$.
+%
+A set is \emph{compact} if it is closed and bounded.
+
+\subsection{Set operations}\label{sec:setops}
+
+Given two sets $\X, \Y \subseteq \R^n$, the \emph{Minkowski sum} is
+%
+\[
+	\X \oplus \Y = \{ x + y \mid x \in \X, y \in \Y \}
+\]
+
+The \emph{symmetric interval hull} of $\X$ is the smallest hyperrectangle that is centrally symmetric in the origin and contains $\X$.
+
+Maps such as the \emph{linear map} $A \X$ are applied element-wise:
+%
+\[
+	A \X = \{ A x \mid x \in \X \}
+\]
+
+
+\subsection{Basic properties of support functions}\label{sec:supfunc_properties}
+
+The support function is a basic notion for approximating convex sets. Let $\X \subset \R^n$ be a compact convex set. The support function of $\X$ is the function defined as
+\begin{equation}\label{eq:supfuncdef}
+\rho(d, \X) := \max\limits_{x \in \X} d^\mathrm{T} x.
+\end{equation}
+
+We recall the following elementary properties of the support function. For all compact convex sets $\X$ and $\Y$ in $\R^n$, for all $n\times n$ real
+matrices $M$, all scalars $\lambda$, and all vectors
+$d \in \R^n$, we have:
+
+\begin{align*}
+    &\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y) \\
+    %
+    &\rho(d, \X \times \Y) = \rho(d_1, \X) + \rho(d_2, \Y) \\
+    %
+    &\rho(d, \CH(\X \cup \Y)) = \max(\rho(d, \X), \rho(d, \Y)) \\
+    %
+    &\rho(d, M \X) = \rho(M^T d, \X) \\
+    %
+    &\rho(d, \lambda \X) = \rho(\lambda d, \X)
+\end{align*}
+Properties of the support vector (maximizers of \eqref{eq:supfuncdef}) can be found on the LazySets online documentation.
+%
+Analytic formulas for many important set types are known, allowing for efficient evaluations.
+%
+The LazySets docstrings contain mathematical explanations and references to the relevant literature (see for example \code{?Zonotope}).
+
+
+\section{Code used in examples} \label{sec:code_examples}
+
+The complete code for all examples can be found in the repository \url{http://github.com/JuliaReach/LazySets-JuliaCon21}. In this section we comment on some aspects of the code.
+
+
+\subsection{Code for Fig.~\ref{sec:composition}} \label{sec:omega0}
+
+The set $\X_0$ is a ball in the infinity norm of radius $0.1$ centered in $[1, 0]$, the set $E_+$ is a hyperrectangle centered in the origin, and $\Phi$ is a $2 \times 2$ matrix defined below.
+%
+In the context of reachability analysis for linear differential equations \cite{BogomolovFFVPS18}, the set $\X_0$ corresponds to the initial states, $E_+$ accouts for bloating terms, and $\Phi = e^{A\delta}$ is the state-transition matrix for some matrix $A$ and time step $\delta > 0$.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+A = [0 1; -(4π)^2 0]
+X₀ = BallInf([1.0, 0.0], 0.1)
+δ = 0.025
+Φ = exp(A*δ)
+  2×2 Matrix{Float64}:
+    0.95105652  0.02459079
+   -3.88322208  0.95105652
+
+r = [0.05477208, 0.07676220]
+E₊ = Hyperrectangle(zeros(2), r)
+Ω₀ = CH(X₀, Φ*X₀ ⊕ E₊)
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Code for Fig.~\ref{fig:supfunc}}
+
+In Fig.~\ref{fig:supfunc}, the set $\X$ is a polygon in vertex representation. Such a \code{VPolygon} can be constructed from a vector of points, or simply a matrix where each column corresponds to the coordinates of a point. (For higher-dimensional sets in vertex representation the set type \code{VPolytope} is used).
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+# two-dimensional polygon in vertex representation
+X = VPolygon([-3   -2   0   1  2  0  -0.8;
+              0.6  -2  -2  -1  1  2   1.8])
+\end{lstlisting}
+\end{minipage}
+
+The supporting half-space of $\X$ is computed by evaluation of the support function along the direction of interest.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+# computing a supporting half-space
+d = [-1.0, 1.0]
+sf = ρ(d, X)
+H = HalfSpace(d, sf)
+\end{lstlisting}
+\end{minipage}
+
+
+\subsection{Code for Fig.~\ref{fig:overapproximate}}
+
+The set $\X$ is the same as in Fig.~\ref{fig:supfunc}.
+We overapproximate it with a box (\code{Y}) and two zonotopes (\code{Z} and \code{W}).
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+Y = box_approximation(X)
+Z = overapproximate(X, Zonotope, PolarDirections(3))
+W = overapproximate(X, Zonotope, PolarDirections(5))
+\end{lstlisting}
+\end{minipage}
+
+The third argument to \code{overapproximate} here represents a list of vectors that are used to synthesize the generators of the resulting zonotope.
+The type \code{PolarDirections} lazily represents vectors that uniformly cover the unit disc, starting with the vector $(1, 0)^T$.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+collect(PolarDirections(5))
+5-element Vector{Vector{Float64}}:
+ [1.0, 0.0]
+ [0.30901699437494745, 0.9510565162951535]
+ [-0.8090169943749473, 0.5877852522924732]
+ [-0.8090169943749475, -0.587785252292473]
+ [0.30901699437494723, -0.9510565162951536]
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Code for Section~\ref{sec:taylormodels}} \label{sec:taylormodels_appendix}
+
+The linear Taylor models are $p_1(t) = 2 + t$ and $p_2(t) = 0.9 + 3t$ with remainders $I_1 = I_2 = [-0.5, 0.5]$ in the domain $D = [-3, 1]$ and centered at zero.
+%
+The non-linear case has $p_1(t)$ as in the linear one and $p_2(t) = 0.9 + 3t + 3t^2$ with the same remainders and domain as in the linear case.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+using TaylorModels
+const IA = IntervalArithmetic
+const TM1 = TaylorModel1
+
+I = IA.Interval(-0.5, 0.5)
+x₀ = IA.Interval(0.0)
+D = IA.Interval(-3.0, 1.0)
+p1 = Taylor1([2.0, 1.0], 2)
+p2 = Taylor1([0.9, 3.0], 2)
+
+# define vector of linear Taylor models
+vTMlin = [TM1(pi, I, x₀, D) for pi in [p1,p2]]
+
+# define vector of non-linear Taylor models
+p2nl = Taylor1([0.9, 3.0, 3.0], 3)
+vTMnonlin = [TM1(pi, I, x₀, D) for pi in [p1, p2nl]]
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Code for Section~\ref{sec:custom_arrays}}
+
+Special array operations and the type \code{SingleEntryVector} are available in the LazySets submodule \code{LazySets.Arrays}. This example consists of the concrete intersection of two 10-dimensional sets, one of them which is unbounded (a half-space).
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+const SEV = LazySets.Arrays.SingleEntryVector
+
+X = Hyperrectangle(zeros(10), 2*ones(10))
+Hsev = HalfSpace(SEV(1, 10, 1.0)), 1.0)
+Hvec = HalfSpace(Vector(Hsev.a), 1.0)
+\end{lstlisting}
+\end{minipage}
+
+
+
+
+

@@ -1,0 +1,220 @@
+\begin{table*}[tb]
+	\tbl{Set operations available in LazySets. The result of the last three operations is generally not convex even if used with convex operands. For binary operations (marked with \binary{$\cdot$}) there is also an $n$-ary lazy version with the suffix \code{Array}, e.g., \code{MinkowskiSumArray}. Unicode symbols (as mentioned in the column ``Short form'') are entered in the Julia REPL by typing the \LaTeX\ command (e.g.: \code{\textbackslash{}oplus} for $\oplus$) followed by pressing the ``Tab'' key. See Appendix~\ref{sec:setops} for some central definitions.}{
+	\begin{tabular}{l l l l l}
+		\toprule
+		Operation name & Math form & Lazy function (constructor) & Short form & Concrete function \\
+		\midrule
+		%
+		\binary{Minkowski sum} & $\X \oplus \Y$ & \code{MinkowskiSum} & \code{+},\code{\textbackslash{}oplus} & \code{minkowski$\_$sum} \\
+		%
+		\binary{Intersection} & $\X \cap \Y$ & \code{Intersection} & \code{\textbackslash{}cap} & \code{intersection} \\
+		%
+		\binary{Cartesian product} & $\X \times \Y$ & \code{CartesianProduct} & \code{*},\code{\textbackslash{}times} & \code{cartesian$\_$product} \\
+		%
+		\binary{Convex hull} & $\CH(\X \cup \Y)$ & \code{ConvexHull} & \code{CH} & \code{convex$\_$hull} \\
+		%
+		Symmetric interval hull & $\boxdot(\X)$ & \code{SymmetricIntervalHull} & \code{\textbackslash{}boxdot} & \code{symmetric$\_$interval$\_$hull} \\
+		%
+		Linear map & $A \X$ & \code{LinearMap} & \code{*} & \code{linear$\_$map} \\
+		%
+		Exponential map & $e^A \X$ & \code{ExponentialMap} && \code{exponential$\_$map} \\
+		%
+		Translation & $\X + b$ & \code{Translation} & \code{+} & \code{translate} \\
+		%
+		Affine map & $A \X + b$ & \code{AffineMap} & \code{*} and \code{+} & \code{affine$\_$map} \\
+		%
+		Reset map & $x_i \mapsto c$ & \code{ResetMap} && - \\
+		%
+		Inverse linear map & $A^{-1} \X$ & \code{InverseLinearMap} && - \\
+		%
+		Bloating & $\X \oplus \{x : \Vert x \Vert \leq \varepsilon\}$ & \code{Bloating} && - \\
+		%
+		\midrule
+		%
+		\binary{Union} & $\X \cup \Y$ & \code{UnionSet} & \code{\textbackslash{}cup} & - \\
+		%
+		Complement & $\X^C$ & \code{Complement} && \code{complement} \\
+		%
+		Rectified linear unit & $x_i \mapsto \max(x_i, 0)$ & \code{Rectification} && \code{rectify} \\
+		\bottomrule
+	\end{tabular}}
+	\label{tab:operations}
+\end{table*}
+
+LazySets offers support for \emph{convex} and \emph{non-convex} sets.
+%
+Intuitively, a set $\X$ is convex if one can draw a straight line segment between any two points in $\X$ without leaving $\X$ (see Appendix~\ref{sec:convexdef} for a formal definition).
+This explains why optimization over a convex set is efficient.
+Convex sets enjoy several other attractive properties, and many important geometric shapes are convex.
+%
+
+\subsection{Constructing sets}
+
+Two basic sets are the \emph{hyperplane}
+%
+\[
+	\{x \in \R^n \mid a^T x = b\},
+\]
+%
+which is parametric in a vector $a \in \R^n$ and a scalar $b \in \R$, and the \emph{half-space} (or \emph{linear constraint})
+%
+\[
+	\{x \in \R^n \mid a^T x \leq b\},
+\]
+%
+which consists of all points on one side of the corresponding hyperplane.
+In LazySets these sets are constructed from $a$ and $b$. For example, the two-dimensional hyperplane $x = 1$ (resp. the half-space $x \leq 1$) are:
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+julia> a = [1.0, 0.0]; b = 1.0
+
+julia> Hyperplane(a, b)
+Hyperplane{Float64,Vector{Float64}}([1.0, 0.0], 1.0)
+
+julia> HalfSpace(a, b)
+HalfSpace{Float64,Vector{Float64}}([1.0, 0.0], 1.0)
+\end{lstlisting}
+\end{minipage}
+Higher-dimensional sets are defined in a similar fashion; for instance, the 100-dimensional half-space $x_1 + \ldots + x_{100} \leq 10$ is:
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+julia> a = fill(1.0, 100); b = 10.0
+
+julia> HalfSpace(a, b)
+HalfSpace([1.0, ..., 1.0], 10.0)
+	\end{lstlisting}
+\end{minipage}
+
+
+The most widely used convex sets in various disciplines are (convex) \emph{polyhedra}, which are characterized as the finite intersection of half-spaces.
+Optimization over a polyhedron corresponds to solving a linear program.
+In Fig.~\ref{fig:supfunc} we show an example of a \emph{polytope} (a bounded polyhedron) with seven (linear) constraints in orange and a half-space in blue.
+
+\smallskip
+
+LazySets contains many (currently: $26$) different structs to represent common classes of sets (such as half-spaces).
+These set types simply expect and store the corresponding parameters to represent the set.
+For example, the \code{HalfSpace} stores the vector \code{a} and the scalar \code{b}.
+(There are a few exceptions where the constructor performs normalization by default, e.g., \code{HPolygon}, representing a two-dimensional polytope, sorts the constraints by the vectors \code{a} in counter-clockwise order.)
+Hence construction is fast and the internal representation is space efficient.
+For instance, the \code{BallInf} represents a hypercube specified by the center vector $c \in \R^n$ and the radius $r \in \R$.
+In $n$ dimensions, a hypercube has $2^n$ vertices, but creating an $1{,}000$-dimensional \code{BallInf} is instantaneous.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+julia> @time BallInf(zeros(1000), 1.0)
+0.000005 seconds (2 allocations: 7.969 KiB)
+\end{lstlisting}
+\end{minipage}
+
+
+\subsection{Extracting information from sets}
+
+Being able to represent sets is not useful by itself because we also want to interact with them.
+For example, we may want to draw samples from a set.
+A general approach to do that is rejection sampling, which picks a random point $x \in \R^n$ and checks whether $x \in \X$ holds.
+We can thus use rejection sampling with any set type that implements a membership test.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+julia> ones(1000) ∈ BallInf(zeros(1000), 1.0)
+true
+\end{lstlisting}
+\end{minipage}
+
+Other typical properties that can be checked for sets $\X$ and $\Y$ are emptiness ($\X = \emptyset$; \code{isempty}), inclusion ($\X \subseteq \Y$; \code{issubset}), and having no point in common ($\X \cap \Y = \emptyset$; \code{isdisjoint}).
+
+\smallskip
+
+We may also want to obtain information that is encoded in the set representation.
+For example, we can ask for the list of vertices of a polytope.
+We have seen that a hypercube is represented by the center and the radius, so the vertices need to be computed on demand.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+julia> vertices_list(BallInf([1.0, 4.0], 1.0))
+4-element Vector{Vector{Float64}}:
+ [2.0, 5.0]
+ [0.0, 5.0]
+ [2.0, 3.0]
+ [0.0, 3.0]
+\end{lstlisting}
+\end{minipage}
+
+Equality of sets in the mathematical sense can be checked via \code{isequivalent} (which by default checks mutual inclusion):
+
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+julia> X = Interval(-1, 1) × Interval(-1, 1)
+CartesianProduct{Float64,
+  Interval{...}, Interval{...}}(...)
+
+julia> Y = BallInf(zeros(2), 1.0)
+
+julia> isequivalent(X, Y)
+true
+\end{lstlisting}
+\end{minipage}
+
+
+\subsection{Set interfaces}
+
+Sometimes the same implementation works for several set types.
+LazySets uses a hierarchy of abstract types (which we call \emph{interfaces}) to summarize common functionality.
+For example, \code{AbstractHyperrectangle} is a supertype of all hyperrectangular set types such as \code{BallInf} and provides a default implementation to compute the volume.
+When adding a new set type representing a hyperrectangle, it will automatically use this implementation.
+
+The following list is not exhaustive, but should help as a mental model of how the library is organized. Definitions are given from more specific to more general (i.e., less structured).
+
+\smallskip
+
+\code{AbstractHyperrectangle}: Hyperrectangular sets can be represented by a center vector $c \in \R^n$ and a radius vector $r \in \R^n$. Each $x \in \X$ can be written as $x_i = c_i + \xi_i r_i$ for $i = 1,\ldots, n$, for some $\xi_i \in [-1, 1]$. Implementations include intervals (\code{Interval}), hypercubes (\code{BallInf}), and the general \code{Hyperrectangle}.
+
+\smallskip
+
+\code{AbstractZonotope}: Zonotopic sets are those which admit a representation given by a center $c \in \R^n$ and a finite set of \emph{generators} $g_j \in \R^n$, $j \in 1, \ldots, m$, such that $x \in \X$ is can be written as $x = c + \sum_j \xi_j g_j$ for some $\xi_j \in [-1, 1]$. Hyperrectangular sets are also zonotopic, as well as general zonotopes (\code{Zonotope}).
+
+\smallskip
+
+\code{AbstractPolyhedron}: A set is called polyhedral if it can be expressed as a finite intersection of half-spaces. Special cases include hyperrectangular and zonotopic sets, as well as more general polytopes (\code{HPolytope}, \code{VPolytope}) and also possibly unbounded polyhedra (\code{HPolyhedron}).
+
+\smallskip
+
+\code{LazySet}: All convex set types belong to this abstract supertype to prevent type piracy when extending \code{Base} functions.
+We are working toward having non-convex sets, such as set unions, in the same type hierarchy as well.
+
+
+\subsection{Set operations}
+
+We have seen that we can interact with sets by checking properties.
+Importantly, we can also apply set operations to sets for constructing new sets.
+(By default the result is a fresh set and the original set is not manipulated.)
+For example, one common set operation is to translate (or shift) every element in the set by a constant vector.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+julia> B1 = BallInf([1.5, 2.0], 1.0)
+julia> B2 = translate(B1, [1.5, -1.0])
+julia> dump(B2)
+BallInf{Float64, Vector{Float64}}
+  center: Array{Float64}((2,)) [3.0, 1.0]
+  radius: Float64 1.0
+\end{lstlisting}
+\end{minipage}
+
+As seen above, a translation usually preserves the set type.
+For most operations this is generally not the case.
+For instance, the intersection of two half-spaces is itself not a half-space but a polyhedron.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}
+# intersect {x | x <= 1} and {x | x >= 0}
+julia> P = intersection(HalfSpace([1.0], 1.0),
+                        HalfSpace([-1.0], 0.0))
+julia> typeof(P)
+HPolyhedron{Float64, Vector{Float64}}
+\end{lstlisting}
+\end{minipage}
+
+For a complete list of the set operations available in LazySets we refer to Table~\ref{tab:operations}.
