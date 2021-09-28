@@ -67,6 +67,8 @@ We can use the support function to get an overapproximation: For every nonempty 
 \end{equation*}
 and equality holds for $D = \R^n$.
 
+\smallskip
+
 LazySets has predefined common template directions such as \code{OctDirections(2)} for directions normal to a regular octagon in two dimensions. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of overapproximating the set $X$ with octagonal directions, resulting in a polygon with eight constraints. Apart from common fixed template directions there are also options for parametric uniform directions in two (\code{PolarDirections}) or three (\code{SphericalDirections}) dimensions or for a custom set of directions (\code{CustomDirections}).
 
 \begin{minipage}{\linewidth}
@@ -78,10 +80,21 @@ julia> length(constraints_list(Xoct))
 \end{lstlisting}
 \end{minipage}
 
-In two dimensions, LazySets can compute $\varepsilon$-close overapproximations via \code{overapproximate(X, $\varepsilon$)}.
-Such overapproximations generally yield an \code{HPolytope} if $\X$ is bounded.
-In some applications, we may want to ensure that the result has a specific set type.
-The smallest bounding box, which is available via \code{overapproximate(X, Hyperrectangle)} (or the equivalent shorthand \code{box\_approximation(X)}), yields a \code{Hyperrectangle}, which is more efficient to work with.
+In two dimensions (or the projection of a higher-dimensional set into two dimensions), LazySets can compute $\varepsilon$-close overapproximations via \code{overapproximate(X, $\varepsilon$)}, where $\varepsilon$ is the specified tolerance.
 %
-We can also obtain a zonotope via \code{overapproximate(P, Zonotope, D)} where \code{P} is a polytope and \code{D} is a vector of directions used as candidates for the generators.
-We show some example overapproximations in Fig.~\ref{fig:overapproximate}.
+Such overapproximations generally yield an \code{HPolytope} if $\X$ is bounded.
+
+\smallskip
+
+In some applications, we may want to ensure that the result has a specific set type.
+The smallest bounding box is available by specifying the second argument type. It yields a \code{Hyperrectangle}, which is more efficient to work with.
+
+\begin{minipage}{\linewidth}
+	\begin{lstlisting}
+julia> overapproximate(X, Hyperrectangle)
+
+julia> box_approximation(X) # alias
+\end{lstlisting}
+\end{minipage}
+
+We can use \code{overapproximate(P, Zonotope, D)}, where \code{P} is a polytope and \code{D} is a vector of directions used as candidates for the generators, to obtain a zonotope (in any dimension). We show some example overapproximations in Fig.~\ref{fig:overapproximate}.

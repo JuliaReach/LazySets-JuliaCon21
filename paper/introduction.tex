@@ -1,7 +1,10 @@
-\href{https://github.com/JuliaReach/LazySets.jl}{LazySets.jl} is an open-source Julia package for calculus with geometric sets of points in Euclidean space (for a visual example see Fig.~\ref{fig:lotka_volterra}).
-That is, the package provides solutions to represent sets, perform calculations on them, and combine them via set operations to form new sets.
+\href{https://github.com/JuliaReach/LazySets.jl}{LazySets.jl} is an open-source Julia package for calculus with geometric sets of points in Euclidean space. For a visual example showing the sets of states reachable by the Lotka-Volterra equations, see Fig.~\ref{fig:lotka_volterra}.
+%
+The package provides solutions to represent sets, perform calculations on them, and combine them via set operations to form new sets.
+%
 A key aspect of LazySets is that set operations can be applied concretely, meaning that a computation is invoked, or lazily, meaning that the computation is delayed.
-Crucially, based on geometric concepts, LazySets can evaluate queries on the lazy set representation, which enables efficient operation in very high dimensions that is not possible when applying the operations concretely.
+%
+Based on geometric concepts, LazySets can evaluate queries on the lazy set representation, which enables efficient operation in very high dimensions that is not possible when applying the operations concretely.
 
 \smallskip
 
