@@ -1,4 +1,4 @@
-title: "LazySets.jl: Scalable Symbolic-Numeric Set Computations"
+title: "LazySets.jl: Scalable Symbolic-Numeric Set Computations$^*$"
 keywords:
   - Set propagation
   - Geometry
@@ -9,10 +9,10 @@ keywords:
 authors:
   - name: Marcelo Forets
     orcid: 0000-0002-9831-7801
-    affiliation: 1,*
+    affiliation: 1
   - name: Christian Schilling
     orcid: 0000-0003-3658-1065
-    affiliation: 2,*
+    affiliation: 2
 affiliations:
   - name: Universidad de la Rep\'{u}blica, Uruguay
     index: 1
