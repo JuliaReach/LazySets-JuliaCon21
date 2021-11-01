@@ -7,7 +7,7 @@ by [Marcelo Forets](https://github.com/mforets) (Universidad de la República, U
 
 ## Article
 
-[paper.pdf](https://github.com/JuliaReach/LazySets-JuliaCon21/blob/main/paper/paper.pdf)
+See [paper.pdf](https://github.com/JuliaReach/LazySets-JuliaCon21/blob/main/paper/paper.pdf).
 
 ## Presentation
 
