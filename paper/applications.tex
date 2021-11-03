@@ -11,6 +11,7 @@ From three-dimensional visualizations to reachability analysis using non-convex 
 Some LazySets functionality prints instructive error messages when the corresponding packages are not loaded but are required by the code. For example, the conversion between constraint and vertex representation of general polytopes in dimension higher than two requires the optional package \href{https://github.com/JuliaPolyhedra/Polyhedra.jl}{Polyhedra.jl}:
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 julia> X = rand(VPolytope, dim=4)
 	
@@ -37,7 +38,7 @@ While writing this article, we received the following question:
 We need to plot polyhedra given in a form like this:
 
 \begin{center}
-	2*x1 >= 0 \& 3*x2+1.7*x3 >=0
+	\texttt{2 * x1 >= 0 \& 3 * x2 + 1.7 * x3 >= 0}
 \end{center}
 
 Is there a way to plot a 2D projection with LazySets?
@@ -49,6 +50,7 @@ The script nicely illustrates the interaction of LazySets with the Julia ecosyst
 We use \href{https://github.com/JuliaSymbolics/Symbolics.jl}{Symbolics.jl} for reading the polyhedron in symbolic form, Polyhedra.jl and \href{https://github.com/JuliaPolyhedra/CDDLib.jl}{CDDLib.jl} for projecting the polyhedron, and \href{https://github.com/JuliaPlots/Plots.jl}{Plots.jl} to plot the two-dimensional projection.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 using Symbolics
 import Polyhedra, CDDLib, Plots
@@ -66,6 +68,7 @@ We can also plot the three-dimensional set with \href{https://github.com/JuliaPl
 The Makie plot and the two-dimensional projection are shown in Fig.~\ref{fig:polyhedra}.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 import GLMakie
 
@@ -116,6 +119,7 @@ One question we received was:
 The solution was surprisingly simple: extending the LazySets tolerance mechanism to work with dual numbers fixed the error.
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 import ForwardDiff
 import LazySets.default_tolerance
@@ -141,6 +145,7 @@ To illustrate, we consider using LazySets to convert, or evaluate the range, of 
 It is easy to operate with Taylor models in LazySets (the definition of \code{vTM} for the linear and nonlinear case is given in Appendix~\ref{sec:taylormodels_appendix}):
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 using TaylorModels
 
@@ -158,7 +163,7 @@ overapproximate(vTM, Hyperrectangle)
 	\centering
 	\includegraphics[height=3.5cm, keepaspectratio]{img/taylormodel_linear}
 	\includegraphics[height=3.5cm, keepaspectratio]{img/taylormodel_nonlinear}
-	\caption{Exact conversion of a linear Taylor model to a zonotope against an inexact evaluation using interval arithmetic (right). Approximate conversion of a non-linear Taylor model using a single zonotope, and range evaluation with interval arithmetic by splitting its domain into $100$ intervals (right).}
+	\caption{Exact conversion of a linear Taylor model to a zonotope against an inexact evaluation using interval arithmetic (left). Approximate conversion of a non-linear Taylor model using a single zonotope, and range evaluation with interval arithmetic by splitting its domain into $100$ intervals (right).}
 	\label{fig:taylormodelsconversion}
 \end{figure}
 
@@ -167,6 +172,7 @@ In the case when the Taylor model is linear, the conversion is exact, because th
 Hence, as is shown in Fig.~\ref{fig:taylormodelsconversion} (left), the zonotope approximation (\code{Z}) is better than directly using interval arithmetic to evaluate the range (\code{H}), and queries about the zonotope provide quick information about the exact set, more accurate than the box approximation:
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> d = [-0.35, 0.93]
  
@@ -210,6 +216,7 @@ As a second example, a three-dimensional flowpipe for the well-known Lorenz syst
 In this simulation, the initial conditions are defined as a flat hyperrectangle of radius $0.1$ along the $x$ coordinate:
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 X0 = Hyperrectangle(low=[0.9, 0.0, 0.0],
 				    high=[1.1, 0.0, 0.0])
@@ -246,6 +253,7 @@ For set types that contain array fields, we use type parameters. Hence it is pos
 For example, static arrays (where the size of the array can be determined from the type) are preferable for efficient set computations with ``small'' arrays and are available upon loading \href{https://github.com/JuliaArrays/StaticArrays.jl}{StaticArrays.jl}:
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> using StaticArrays
 
@@ -277,6 +285,7 @@ Custom arrays can also be used to express knowledge about the \emph{structure} o
 Then, the concrete intersection with a hyperrectangular set can be computed very efficiently:
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 # half-space with a normal array
 julia> @btime intersection($X, $Hvec)
@@ -297,7 +306,8 @@ Below we show how to use \href{https://github.com/JuliaPy/pyjulia}{pyjulia} for 
 %
 We can see that it is not necessary to use Julia objects everywhere; NumPy arrays can also be used, making the interoperability between Julia and Python effortless.
 
-% \begin{minipage}{\linewidth}
+\begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}[language=python]
 $ python3 -m pip install --user julia
 
@@ -319,4 +329,4 @@ $ python3
 >>> volume(B)
 8.0
 	\end{lstlisting}
-% \end{minipage}
+\end{minipage}

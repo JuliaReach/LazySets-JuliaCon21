@@ -16,7 +16,7 @@ We wrap the operands in a new object that, by definition, represents the result 
 
 \smallskip
 
-As an illustrative example, suppose that we are interested in the formula $\Omega_0 = \CH(\X_0, \Phi \X_0 \oplus E_+)$. Such formulas are prevalent in reachability analysis of linear initial-value problems, or nonlinear ones after some form of conservative linearization; see for example \cite{althoff2020set} and references therein. Given the sets $\X_0$, $E_+$, and the matrix $\Phi$ defined in Appendix~\ref{sec:omega0}, we can write:
+As an illustrative example, suppose that we are interested in the formula $\Omega_0 = \CH(\X_0, \Phi \X_0 \oplus E_+)$, where $\CH$ and $\oplus$ are defined in Table~\ref{tab:operations}, $X_0$ and $E_+$ are sets, and $\Phi$ is a matrix defined in Appendix~\ref{sec:omega0}. Such formulas are prevalent in reachability analysis of linear initial-value problems, or nonlinear ones after some form of conservative linearization; see for example \cite{althoff2020set} and references therein. Given the sets $\X_0$, $E_+$, and the matrix $\Phi$, we can write:
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
@@ -29,7 +29,27 @@ Then, $\Omega_0$ is a (nested) \emph{lazy} representation of the  operation just
 \end{minipage}
 \hfill
 \begin{minipage}{0.2\linewidth}
-		\includegraphics[width=\linewidth, keepaspectratio]{img/ast}
+	\begin{tikzpicture}[level/.style={sibling distance=8mm,level distance=8mm}]
+		\node {\texttt{CH}}
+		child {
+			node {\texttt{X}}
+		}
+		child {
+			node {$\oplus$}
+			child {
+				node {\texttt{*}}
+				child {
+					node {$\Phi$}
+				}
+				child {
+					node {\texttt{X}}
+				}
+			}
+			child {
+				node {\texttt{E}}
+			}
+		};
+	\end{tikzpicture}
 \end{minipage}
 
 \smallskip
@@ -49,9 +69,10 @@ Basic properties of the support function are given in Appendix~\ref{sec:supfunc_
 
 \smallskip
 
-LazySets offers \code{$\uprho$(d, \X)} (or \code{support\_function(d, \X)}) to compute the support function $\rho(d,\X)$, and \code{$\upsigma$(d, \X)} (or \code{support\_vector(d, \X)}) to compute (some) support vector $\sigma(d,\X)$. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of the support function over polygon $\X$ (orange) along direction $(-1.0, 1.0)^T$.
+LazySets offers \code{$\uprho$(d, \X)} (or \code{support\_function(d, \X)}) to compute the support function $\rho(d,\X)$, and \code{$\upsigma$(d, \X)} (or \code{support\_vector(d, \X)}) to compute (some) support vector $\sigma(d,\X)$. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of the support function over the polygon $\X$ (orange) along direction $(-1.0, 1.0)^T$.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 julia> d = [-1.0, 1.0]
 
@@ -84,9 +105,10 @@ Consider again the set $\Omega_0$ from the previous section. Suppose that we are
 %
 Since the support function distributes over the Minkowski sum, $\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y)$ for any pair of sets $\X, \Y \subseteq \R^n$, and since it holds that $\rho(d, M \X) = \rho(M^T d, \X)$ for any matrix $M \in \R^{n \times n}$, we can propagate the computation through the operation tree until a concrete set is found, and in many cases, an analytic formula is available.
 %
-That is precisely what LazySets does, automatically, when we make numeric queries to the lazy set such as its support function along $d = (-1, 1)^T$.
+That is precisely what LazySets does, automatically, when we make queries to the lazy set such as asking for its support function along $d = (-1, 1)^T$.
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> d = [-1, 1]
 

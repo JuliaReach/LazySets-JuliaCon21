@@ -5,6 +5,7 @@ To use LazySets, first install Julia version v1.3 or higher\footnote{Julia binar
 followed by
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 pkg> add LazySets
 \end{lstlisting}
@@ -12,6 +13,7 @@ pkg> add LazySets
 To load the package in a Julia session, do \code{using}, e.g.
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> using LazySets
 
@@ -65,14 +67,16 @@ The support function is a basic notion for approximating convex sets. Let $\X \s
 \rho(d, \X) := \max\limits_{x \in \X} d^\mathrm{T} x.
 \end{equation}
 
-We recall the following elementary properties of the support function. For all compact convex sets $\X$ and $\Y$ in $\R^n$, for all $n\times n$ real
+We recall the following elementary properties of the support function.
+Let $(d_1, d_2)$ denote the concatenation of vectors $d_1$ and $d_2$.
+For all compact convex sets $\X, \Y$ in $\R^n$, $\Z$ in $\R^m$, all $n\times n$ real
 matrices $M$, all scalars $\lambda$, and all vectors
-$d \in \R^n$, we have:
-
+$d, d_1 \in \R^n$, $d_2 \in \R^m$ we have:
+%
 \begin{align*}
     &\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y) \\
     %
-    &\rho(d, \X \times \Y) = \rho(d_1, \X) + \rho(d_2, \Y) \\
+    &\rho((d_1, d_2), \X \times \Z) = \rho(d_1, \X) + \rho(d_2, \Z) \\
     %
     &\rho(d, \CH(\X \cup \Y)) = \max(\rho(d, \X), \rho(d, \Y)) \\
     %
@@ -80,6 +84,7 @@ $d \in \R^n$, we have:
     %
     &\rho(d, \lambda \X) = \rho(\lambda d, \X)
 \end{align*}
+%
 Properties of the support vector (maximizers of \eqref{eq:supfuncdef}) can be found on the LazySets online documentation.
 %
 Analytic formulas for many important set types are known, allowing for efficient evaluations.
@@ -99,6 +104,7 @@ The set $\X_0$ is a ball in the infinity norm of radius $0.1$ centered in $[1, 0
 In the context of reachability analysis for linear differential equations \cite{BogomolovFFVPS18}, the set $\X_0$ corresponds to the initial states, $E_+$ accouts for bloating terms, and $\Phi = e^{A\delta}$ is the state-transition matrix for some matrix $A$ and time step $\delta > 0$.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 A = [0 1; -(4π)^2 0]
 X₀ = BallInf([1.0, 0.0], 0.1)
@@ -119,6 +125,7 @@ E₊ = Hyperrectangle(zeros(2), r)
 In Fig.~\ref{fig:supfunc}, the set $\X$ is a polygon in vertex representation. Such a \code{VPolygon} can be constructed from a vector of points, or simply a matrix where each column corresponds to the coordinates of a point. (For higher-dimensional sets in vertex representation the set type \code{VPolytope} is used).
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 # two-dimensional polygon in vertex representation
 X = VPolygon([-3   -2   0   1  2  0  -0.8;
@@ -129,6 +136,7 @@ X = VPolygon([-3   -2   0   1  2  0  -0.8;
 The supporting half-space of $\X$ is computed by evaluation of the support function along the direction of interest.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 # computing a supporting half-space
 d = [-1.0, 1.0]
@@ -144,6 +152,7 @@ The set $\X$ is the same as in Fig.~\ref{fig:supfunc}.
 We overapproximate it with a box (\code{Y}) and two zonotopes (\code{Z} and \code{W}).
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 Y = box_approximation(X)
 Z = overapproximate(X, Zonotope, PolarDirections(3))
@@ -155,6 +164,7 @@ The third argument to \code{overapproximate} here represents a list of vectors t
 The type \code{PolarDirections} lazily represents vectors that uniformly cover the unit disc, starting with the vector $(1, 0)^T$.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 collect(PolarDirections(5))
 5-element Vector{Vector{Float64}}:
@@ -173,6 +183,7 @@ The linear Taylor models are $p_1(t) = 2 + t$ and $p_2(t) = 0.9 + 3t$ with remai
 The non-linear case has $p_1(t)$ as in the linear one and $p_2(t) = 0.9 + 3t + 3t^2$ with the same remainders and domain as in the linear case.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 using TaylorModels
 const IA = IntervalArithmetic
@@ -198,6 +209,7 @@ vTMnonlin = [TM1(pi, I, x₀, D) for pi in [p1, p2nl]]
 Special array operations and the type \code{SingleEntryVector} are available in the LazySets submodule \code{LazySets.Arrays}. This example consists of the concrete intersection of two 10-dimensional sets, one of them which is unbounded (a half-space).
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 const SEV = LazySets.Arrays.SingleEntryVector
 

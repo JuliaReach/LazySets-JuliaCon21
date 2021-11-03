@@ -10,6 +10,7 @@ LazySets extends Julia's \code{convert} function for converting between set repr
 Below are three mathematically equivalent representations of the interval $\X = [0, 1] \subseteq \R$:
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> X = Interval(0, 1)
 Interval{Float64,
@@ -32,6 +33,7 @@ There are even more possibilities, such as representing $\X$ as an intersection 
 With multiple dispatch it is easy to define less obvious conversions, e.g., to convert the Cartesian product of an interval and a two-dimensional hyperrectangle to a three-dimensional zonotope:
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> X = rand(Interval)
 
@@ -69,9 +71,10 @@ and equality holds for $D = \R^n$.
 
 \smallskip
 
-LazySets has predefined common template directions such as \code{OctDirections(2)} for directions normal to a regular octagon in two dimensions. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of overapproximating the set $X$ with octagonal directions, resulting in a polygon with eight constraints. Apart from common fixed template directions there are also options for parametric uniform directions in two (\code{PolarDirections}) or three (\code{SphericalDirections}) dimensions or for a custom set of directions (\code{CustomDirections}).
+LazySets has predefined common template directions such as \code{OctDirections(2)} for directions normal to a regular octagon in two dimensions. Fig.~\ref{fig:supfunc} (right) illustrates the evaluation of overapproximating the set $X$ with octagonal directions, resulting in a polygon with eight constraints. Apart from common fixed template directions there are also options for parametric uniform directions in two (\code{PolarDirections}) or three (\code{SphericalDirections}) dimensions or for a custom set of directions (\code{CustomDirections}).
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 julia> Xoct = overapproximate(X, OctDirections(2))
 
@@ -90,6 +93,7 @@ In some applications, we may want to ensure that the result has a specific set t
 The smallest bounding box is available by specifying the second argument type. It yields a \code{Hyperrectangle}, which is more efficient to work with.
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> overapproximate(X, Hyperrectangle)
 
