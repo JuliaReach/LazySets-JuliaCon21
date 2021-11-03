@@ -84,7 +84,7 @@ Consider again the set $\Omega_0$ from the previous section. Suppose that we are
 %
 Since the support function distributes over the Minkowski sum, $\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y)$ for any pair of sets $\X, \Y \subseteq \R^n$, and since it holds that $\rho(d, M \X) = \rho(M^T d, \X)$ for any matrix $M \in \R^{n \times n}$, we can propagate the computation through the operation tree until a concrete set is found, and in many cases, an analytic formula is available.
 %
-That is precisely what LazySets does, automatically, when we make numeric queries to the lazy set such as its support function along $d = (-1, 1)^T$.
+That is precisely what LazySets does, automatically, when we make queries to the lazy set such as asking for its support function along $d = (-1, 1)^T$.
 
 \begin{minipage}{\linewidth}
 	\begin{lstlisting}
