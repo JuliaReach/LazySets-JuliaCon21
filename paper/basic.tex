@@ -94,7 +94,7 @@ In Fig.~\ref{fig:supfunc} we show an example of a \emph{polytope} (a bounded pol
 \smallskip
 
 LazySets contains many (currently: $26$) different structs to represent common classes of sets (such as half-spaces).
-These set types simply expect and store the corresponding parameters to represent the set.
+These set types simply expect and store the corresponding parameters that represent the set.
 For example, the \code{HalfSpace} stores the vector \code{a} and the scalar \code{b}.
 (There are a few exceptions where the constructor performs normalization by default, e.g., \code{HPolygon}, representing a two-dimensional polytope, sorts the constraints by the vectors \code{a} in counter-clockwise order.)
 Hence construction is fast and the internal representation is space efficient.
