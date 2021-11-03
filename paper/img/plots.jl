@@ -135,14 +135,6 @@ E₊ = Hyperrectangle(zeros(2), r)
 
 Ω₀ = CH(X₀, Φ*X₀ ⊕ E₊)
 
-using TreeView # required to generate the AST
-using TreeView.TikzGraphs.TikzPictures: save, PDF
-
-fig = @tree CH(X₀, Φ*X₀ ⊕ E₊)
-fig.labels[3] = "\\ensuremath{\\oplus}" # fix display of ⊕ in math mode
-t = TreeView.tikz_representation(fig)
-save(PDF("ast"), t)
-
 # make boxes with rounded corners? (doesn't work)
 # using TreeView: TikzGraphs # required to change plot aspects
 #t = TikzGraphs.plot(t, node_style="draw, rounded corners, fill=blue!10")

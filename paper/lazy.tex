@@ -29,7 +29,27 @@ Then, $\Omega_0$ is a (nested) \emph{lazy} representation of the  operation just
 \end{minipage}
 \hfill
 \begin{minipage}{0.2\linewidth}
-		\includegraphics[width=\linewidth, keepaspectratio]{img/ast}
+	\begin{tikzpicture}[level/.style={sibling distance=8mm,level distance=8mm}]
+		\node {\texttt{CH}}
+		child {
+			node {\texttt{X}}
+		}
+		child {
+			node {$\oplus$}
+			child {
+				node {\texttt{*}}
+				child {
+					node {$\Phi$}
+				}
+				child {
+					node {\texttt{X}}
+				}
+			}
+			child {
+				node {\texttt{E}}
+			}
+		};
+	\end{tikzpicture}
 \end{minipage}
 
 \smallskip
