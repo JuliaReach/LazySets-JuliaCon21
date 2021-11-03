@@ -161,7 +161,7 @@ true
 \subsection{Set interfaces}
 
 Sometimes the same implementation works for several set types.
-LazySets uses a hierarchy of abstract types (which we call \emph{interfaces}) to summarize common functionality.
+LazySets uses a hierarchy of abstract types (which we call \emph{interfaces}) to summarize common functionalities.
 For example, \code{AbstractHyperrectangle} is a supertype of all hyperrectangular set types such as \code{BallInf} and provides a default implementation to compute the volume.
 When adding a new set type representing a hyperrectangle, it will automatically use this implementation.
 
