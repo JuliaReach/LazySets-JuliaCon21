@@ -14,3 +14,12 @@ See [paper.pdf](https://github.com/JuliaReach/LazySets-JuliaCon21/blob/main/pape
 The JuliaCon 2021 Workshop tutorial is available on YouTube:
 
 [![JuliaCon 2021 workshop video](https://img.youtube.com/vi/P4I7pTvQ4nk/0.jpg)](https://youtu.be/P4I7pTvQ4nk)
+
+
+## Code used in examples
+
+See the file [plots.jl](https://github.com/JuliaReach/LazySets-JuliaCon21/blob/main/paper/img/plots.jl) in this repository. To generate the plots, do:
+
+```julia
+$ julia plots.jl
+```
