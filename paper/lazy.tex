@@ -52,6 +52,7 @@ Basic properties of the support function are given in Appendix~\ref{sec:supfunc_
 LazySets offers \code{$\uprho$(d, \X)} (or \code{support\_function(d, \X)}) to compute the support function $\rho(d,\X)$, and \code{$\upsigma$(d, \X)} (or \code{support\_vector(d, \X)}) to compute (some) support vector $\sigma(d,\X)$. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of the support function over the polygon $\X$ (orange) along direction $(-1.0, 1.0)^T$.
 
 \begin{minipage}{\linewidth}
+\vspace{-\abovedisplayskip}
 \begin{lstlisting}
 julia> d = [-1.0, 1.0]
 
@@ -87,6 +88,7 @@ Since the support function distributes over the Minkowski sum, $\rho(d, \X \oplu
 That is precisely what LazySets does, automatically, when we make queries to the lazy set such as asking for its support function along $d = (-1, 1)^T$.
 
 \begin{minipage}{\linewidth}
+	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
 julia> d = [-1, 1]
 
