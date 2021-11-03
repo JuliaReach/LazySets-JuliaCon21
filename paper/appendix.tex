@@ -65,14 +65,16 @@ The support function is a basic notion for approximating convex sets. Let $\X \s
 \rho(d, \X) := \max\limits_{x \in \X} d^\mathrm{T} x.
 \end{equation}
 
-We recall the following elementary properties of the support function. For all compact convex sets $\X$ and $\Y$ in $\R^n$, for all $n\times n$ real
+We recall the following elementary properties of the support function.
+Let $(d_1, d_2)$ denote the concatenation of vectors $d_1$ and $d_2$.
+For all compact convex sets $\X, \Y$ in $\R^n$, $\Z$ in $\R^m$, all $n\times n$ real
 matrices $M$, all scalars $\lambda$, and all vectors
-$d \in \R^n$, we have:
-
+$d, d_1 \in \R^n$, $d_2 \in \R^m$ we have:
+%
 \begin{align*}
     &\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y) \\
     %
-    &\rho(d, \X \times \Y) = \rho(d_1, \X) + \rho(d_2, \Y) \\
+    &\rho((d_1, d_2), \X \times \Z) = \rho(d_1, \X) + \rho(d_2, \Z) \\
     %
     &\rho(d, \CH(\X \cup \Y)) = \max(\rho(d, \X), \rho(d, \Y)) \\
     %
@@ -80,6 +82,7 @@ $d \in \R^n$, we have:
     %
     &\rho(d, \lambda \X) = \rho(\lambda d, \X)
 \end{align*}
+%
 Properties of the support vector (maximizers of \eqref{eq:supfuncdef}) can be found on the LazySets online documentation.
 %
 Analytic formulas for many important set types are known, allowing for efficient evaluations.
