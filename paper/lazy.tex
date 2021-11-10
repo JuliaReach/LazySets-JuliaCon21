@@ -10,17 +10,17 @@ Going a step further, by making both basic set types and operations between sets
 
 \subsection{Type composition} \label{sec:composition}
 
-To give an example, the Minkowski sum of a square and a disc (two-dimensional balls in the infinity norm and Euclidean norm) is not representable with a basic type in LazySets. Hence \code{minkowski\_sum} will yield an error. But we can apply the lazy \code{MinkowskiSum} operation, which itself subtypes \code{LazySet}. This choice allows for ease of composition.
+To give an example, the Minkowski sum of a square and a disc (two-dimensional balls in the infinity norm and Euclidean norm) is not representable with a basic type in LazySets. Hence \code{minkowski\_sum} will yield an error. But we can apply the \emph{lazy} operation, which is called \code{MinkowskiSum}. \code{MinkowskiSum} itself subtypes \code{LazySet}. This choice allows for ease of composition.
 
 We wrap the operands in a new object that, by definition, represents the result of the operation, but without actually performing the computation. (This also motivates the name of LazySets).
 
 \smallskip
 
-As an illustrative example, suppose that we are interested in the formula $\Omega_0 = \CH(\X_0, \Phi \X_0 \oplus E_+)$, where $\CH$ and $\oplus$ are defined in Table~\ref{tab:operations}, $X_0$ and $E_+$ are sets, and $\Phi$ is a matrix defined in Appendix~\ref{sec:omega0}. Such formulas are prevalent in reachability analysis of linear initial-value problems, or nonlinear ones after some form of conservative linearization; see for example \cite{althoff2020set} and references therein. Given the sets $\X_0$, $E_+$, and the matrix $\Phi$, we can write:
+As an illustrative example, suppose that we are interested in the formula $\Omega_0 = \CH(\X_0, \Phi \X_0 \oplus Y)$, where $\CH$ and $\oplus$ are defined in Table~\ref{tab:operations}, $X_0$ and $Y$ are sets, and $\Phi$ is a matrix defined in Appendix~\ref{sec:omega0}. Such formulas are prevalent in reachability analysis of linear initial-value problems, or nonlinear ones after some form of conservative linearization; see for example \cite{althoff2020set} and references therein. Given the sets $\X_0$, $Y$, and the matrix $\Phi$, we can write:
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}
-julia> Ω₀ = CH(X₀, Φ*X₀ ⊕ E₊)
+julia> Ω₀ = CH(X₀, Φ*X₀ ⊕ Y)
 \end{lstlisting}
 \end{minipage}
 
@@ -46,7 +46,7 @@ Then, $\Omega_0$ is a (nested) \emph{lazy} representation of the  operation just
 				}
 			}
 			child {
-				node {\texttt{E}}
+				node {\texttt{Y}}
 			}
 		};
 	\end{tikzpicture}

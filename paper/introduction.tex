@@ -1,4 +1,5 @@
 \href{https://github.com/JuliaReach/LazySets.jl}{LazySets.jl} is an open-source Julia package for calculus with geometric sets of points in Euclidean space. For a visual example showing the sets of states reachable by the Lotka-Volterra equations, see Fig.~\ref{fig:lotka_volterra}.
+(The set representations used there will be introduced later.)
 %
 The package provides solutions to represent sets, perform calculations on them, and combine them via set operations to form new sets.
 %
@@ -42,7 +43,9 @@ The code to reproduce the figures can be found in Appendix~\ref{sec:code_example
 	\centering
 	\includegraphics[width=0.7\linewidth, keepaspectratio]{img/lotkavolterra}
 	\vspace*{1mm}
-	\caption{Example of set propagation using LazySets.}
+	\caption{Example of set propagation using LazySets.
+	Starting from a set of initial conditions represented as a hyperrectangle (on the right), a reachability algorithm computes a sequence of Taylor models. For plotting, the Taylor models are overapproximated using zonotopes.
+	It is commonly required to use different set representations in reachability algorithms.}
 	\label{fig:lotka_volterra}
 \end{figure}
 
