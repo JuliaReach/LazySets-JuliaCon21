@@ -48,7 +48,7 @@ julia> dim(Z)
 \end{minipage}
 
 
-\subsection{Approximation}
+\subsection{Approximation}\label{sec:approximation}
 
 \begin{figure}
 	\hfill
@@ -57,7 +57,7 @@ julia> dim(Z)
 	\includegraphics[height=30mm]{img/polardirs}
 	\hfill\
 	\vspace*{1mm}
-	\caption{Left picture: Overapproximation of the polytope from Fig.~\ref{fig:supfunc} (purple) with a hyperrectangle (blue) and two zonotopes. The zonotope generators were synthesized from three (red) resp.\ five (green) polar directions (right). Observe that the approximations are pairwise incomparable.}
+	\caption{Left picture: Overapproximation of the polytope from Fig.~\ref{fig:supfunc} (orange) with a hyperrectangle (blue) and two zonotopes. The zonotope generators were synthesized from three (red) resp.\ five (green) polar directions (right). Observe that the approximations are pairwise incomparable.}
 	\label{fig:overapproximate}
 \end{figure}
 
@@ -102,3 +102,4 @@ julia> box_approximation(X) # alias
 \end{minipage}
 
 We can use \code{overapproximate(P, Zonotope, D)}, where \code{P} is a polytope and \code{D} is a vector of directions used as candidates for the generators, to obtain a zonotope (in any dimension). We show some example overapproximations in Fig.~\ref{fig:overapproximate}.
+Underapproximations can be obtained using the function \code{underapproximate}.

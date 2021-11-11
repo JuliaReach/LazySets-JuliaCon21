@@ -108,10 +108,10 @@ All set functions have been carefully designed to consistently use the specified
 
 Questions from users, bug reports, and feature requests are available in the \href{https://github.com/JuliaReach/LazySets.jl/issues/}{issue tracker}.
 %
-One question we received was:
+One question we received was from a user of \href{https://github.com/JuliaDiff/ForwardDiff.jl}{ForwardDiff.jl}, which is a package to compute the gradient:
 
 \begin{quote}
-	Using \href{https://github.com/JuliaDiff/ForwardDiff.jl}{ForwardDiff.jl} to get the gradient of [...] throws the following error:
+	Using ForwardDiff.jl to get the gradient [...] throws the following error:
 
 \texttt{ERROR: default tolerance for numeric type ForwardDiff.Dual\{...\} is not defined}
 \end{quote}
@@ -127,7 +127,7 @@ import LazySets.default_tolerance
 default_tolerance(::Type{<:ForwardDiff.Dual}) = default_tolerance(Float64)
 	\end{lstlisting}
 \end{minipage}
-With this code, the user could differentiate through the formula \code{area(intersection(X, Y))}, which computes the area of the intersection between sets $\X$ and $\Y$.
+With this code, the user could differentiate through the formula \code{area(intersection(X, Y))}, which computes the area of the intersection of sets $\X$ and $\Y$.
 
 
 \subsection{Taylor models as an example of non-convex sets}\label{sec:taylormodels}
@@ -138,9 +138,10 @@ Examples include star sets (\code{AbstractStar}), polynomial zonotopes (\code{Po
 
 \smallskip
 
-Taylor models are, informally, sets defined by the image of a polynomial map with interval remainders.
+Informally, a Taylor model can be thought of as an interval tube around a polynomial.
+See for example the red set in Fig.~\ref{fig:taylormodelsconversion}.
 %
-To illustrate, we consider using LazySets to convert, or evaluate the range, of a Taylor model (the conversion is formally explained in~\cite{schilling2021verification}).
+To illustrate, we use LazySets to convert, or evaluate the range, of a Taylor model (the conversion is formally explained in~\cite{schilling2021verification}).
 %
 It is easy to operate with Taylor models in LazySets (the definition of \code{vTM} for the linear and nonlinear case is given in Appendix~\ref{sec:taylormodels_appendix}):
 
@@ -150,7 +151,7 @@ It is easy to operate with Taylor models in LazySets (the definition of \code{vT
 using TaylorModels
 
 # approximate a vector of Taylor models
-# with a zonotopes
+# with a zonotope
 overapproximate(vTM, Zonotope)
 
 # approximate a vector of Taylor models
@@ -163,7 +164,7 @@ overapproximate(vTM, Hyperrectangle)
 	\centering
 	\includegraphics[height=3.5cm, keepaspectratio]{img/taylormodel_linear}
 	\includegraphics[height=3.5cm, keepaspectratio]{img/taylormodel_nonlinear}
-	\caption{Exact conversion of a linear Taylor model to a zonotope against an inexact evaluation using interval arithmetic (left). Approximate conversion of a non-linear Taylor model using a single zonotope, and range evaluation with interval arithmetic by splitting its domain into $100$ intervals (right).}
+	\caption{Left: Exact conversion of a linear Taylor model (red) to a zonotope (green) against an inexact evaluation using interval arithmetic (blue). Right: Approximate conversion of a non-linear Taylor model (red) using a single zonotope (green).}
 	\label{fig:taylormodelsconversion}
 \end{figure}
 
@@ -191,7 +192,7 @@ If the Taylor model contains nonlinear terms, the zonotope provides an enclosure
 We also mention that LazySets can be combined with the powerful interval constraint programming approach by simply loading the optional dependency \href{https://github.com/JuliaIntervals/IntervalConstraintProgramming.jl}{IntervalConstraintProgramming.jl}.
 
 
-\subsection{Reachability applications}
+\subsection{Reachability applications}\label{sec:reachability}
 
 LazySets is the core library of JuliaReach, a Julia ecosystem to perform reachability analysis of dynamical systems.
 %

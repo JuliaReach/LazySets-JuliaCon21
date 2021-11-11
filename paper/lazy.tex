@@ -122,11 +122,10 @@ julia> @btime ρ($d, concretize($Ω₀))
 	\end{lstlisting}
 \end{minipage}
 
-In the first benchmark we evaluate the support function for the lazy set.
-In the second benchmark we evaluate the support function including the conversion to a concrete set representation (in this case a polygon in vertex representation).
+In the first benchmark we evaluate the support function on the lazy set.
+In the second benchmark we first convert to a concrete set representation (in this case a polygon in vertex representation) and then evaluate the support function.
 The first case is two orders of magnitude faster.
 This exemplifies that set computations can be implemented efficiently using the support function, which becomes more prominent in higher dimensions.
 
-\smallskip
-
-We also note that the evaluation of the support function is lazy in the sense that it gives partial information at a reduced cost: In the above computation we have only obtained information for direction $d$, not for other directions. For many applications it is sufficient to evaluate the support function in only a few directions. To enclose $\Omega_0$ with a bounded set, we can pick a list of \emph{template} directions and use the methods described in the following section.
+We note that in the above computation we have only obtained a bound in direction $d$, not in other directions. For many applications it is sufficient to evaluate the support function in only a few directions. For example, in the helicopter model presented in Section~\ref{sec:reachability} we are only interested in the vertical velocity, so we only need to evaluate the support function twice to obtain the upper and lower bound in that dimension.
+Another example is to enclose $\Omega_0$ with a bounded set, for which we can pick a list of \emph{template} directions (see Section~\ref{sec:approximation}).

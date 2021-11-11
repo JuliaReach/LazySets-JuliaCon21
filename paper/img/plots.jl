@@ -95,7 +95,7 @@ fig = p(xlim=(-4.1, 2.5), ylim=(-2.5, 2.5), ratio=1, xlab="", ylab="",
 p!(Y, alpha=0.8)
 p!(Z1, alpha=0.8)
 p!(Z2, alpha=0.8)
-p!(X, alpha=0.8)
+p!(X, color=:orange, alpha=0.8)
 
 savefig("overapproximate.pdf")
 
@@ -290,7 +290,7 @@ fig =  p(xlim=(-2, 4), ylim=(-9, 5), ratio=.5,
 
 plot!(fig, H, alpha=.5, lc=:black, lw=1., c=:lightblue)
 
-plot!(fig, Z, lw=1., alpha=1, c=:green)
+plot!(fig, Z, lw=3., alpha=1, c=:green, linecolor=:red)
 
 savefig(fig, "taylormodel_linear.pdf")
 
@@ -327,6 +327,6 @@ plot!(fig, Hnl, alpha=.5, lc=:black, lw=1., c=:lightblue)
 
 plot!(fig, Znl, lw=1., alpha=1, c=:green)
 
-[plot!(fig, Yi, lw=1., alpha=.5, c=:red, lab="") for Yi in Ynlsmall]
+[plot!(fig, Yi, lw=0., alpha=0.5, c=:red, lab="") for Yi in Ynlsmall]
 
 savefig(fig, "taylormodel_nonlinear.pdf")

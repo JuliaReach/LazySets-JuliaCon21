@@ -92,9 +92,13 @@ HalfSpace([1.0, ..., 1.0], 10.0)
 
 
 The most widely used convex sets in various disciplines are (convex) \emph{polyhedra}, which are characterized as the finite intersection of half-spaces.
+This is also known as the \emph{H-representation}.
+For bounded polyhedra, which are called \emph{polytope}, LazySets also supports a dual way to represent such sets in \emph{V-representation} as the convex hull of points.
+The functions \code{tohrep(X)} and \code{tovrep(X)} can be used to convert between these representations.
+
 Optimization over a polyhedron with linear objective corresponds to solving a linear program.
 Linear programs can model a wide variety of real-life optimization problems and can be solved efficiently \cite{dantzig1998linear,kochenderfer2019algorithms}.
-On the left of Fig.~\ref{fig:supfunc} we show an example of a \emph{polytope} (a bounded polyhedron) in orange, with seven (linear) constraints, and a half-space in blue.
+On the left of Fig.~\ref{fig:supfunc} we show an example of a polytope in orange, with seven (linear) constraints, and a half-space in blue.
 
 \smallskip
 
