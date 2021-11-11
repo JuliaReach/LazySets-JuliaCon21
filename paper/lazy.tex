@@ -63,18 +63,26 @@ A standard approach to operate with compact and convex sets $\X \in \R^n$ is to 
 %
 The support function along direction $d \in \R^n$, denoted $\rho(d, \X)$, is the maximum of $d^T x$ over all $x \in \X$, i.e., the support function describes the (signed) distance of the supporting hyperplane in direction $d$ from the origin.
 %
+It can be used to efficiently find the boundary of a set in a given direction.
+%
 The maximizers are called \emph{support vectors} $\sigma(d, \X)$. Intuitively, the support vectors are the extreme points of $\X$ in direction $d$.
 %
 Basic properties of the support function are given in Appendix~\ref{sec:supfunc_properties}.
 
+For various set representations, the support function is known analytically and can be efficiently evaluated numerically. Such cases include hyperrectangular sets and zonotopic sets.
+%
+For sets with less structure, e.g., if $\X$ is a polytope in half-space representation, its support function can be computed by solving a linear program, for which fast and robust solvers exist.
+%
+But the main advantage of using the support function in LazySets lies in the extensive use of \emph{composition rules}, as we describe later.
+
 \smallskip
 
-LazySets offers \code{$\uprho$(d, \X)} (or \code{support\_function(d, \X)}) to compute the support function $\rho(d,\X)$, and \code{$\upsigma$(d, \X)} (or \code{support\_vector(d, \X)}) to compute (some) support vector $\sigma(d,\X)$. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of the support function over the polygon $\X$ (orange) along direction $(-1.0, 1.0)^T$.
+LazySets offers \code{$\uprho$(d, X)} (or \code{support\_function(d, X)}) to compute the support function $\rho(d,\X)$, and \code{$\upsigma$(d, X)} (or \code{support\_vector(d, X)}) to compute (some) support vector $\sigma(d,\X)$. Fig.~\ref{fig:supfunc} (left) illustrates the evaluation of the support function over the polygon $\X$ (orange) along direction $(-1, 1)^T$.
 
 \begin{minipage}{\linewidth}
 \vspace{-\abovedisplayskip}
 \begin{lstlisting}
-julia> d = [-1.0, 1.0]
+julia> d = [-1, 1]
 
 julia> ρ(d, X) # or support_function(d, X)
 3.6
@@ -89,34 +97,35 @@ julia> σ(d, X) # or support_vector(d, X)
 	\includegraphics[width=0.49\linewidth, keepaspectratio]{img/supfunc}
 	\includegraphics[width=0.49\linewidth, keepaspectratio]{img/supfunc_oct}
 	\vspace*{1mm}
-	\caption{Supporting hyperplane of the set $\X$ along direction $d$ (left), and outer approximation of $\X$ using the eight directions of a regular octagon (right).}
+	\caption{Left: The supporting hyperplane of the set $\X$ along direction $d$.
+	In red we plot the distance of the hyperplane to the origin, which is given by $\rho(d', \X)$ where $d' = d / \Vert d \Vert$.
+	Right: An outer approximation of $\X$ using the eight directions of a regular octagon.}
 	\label{fig:supfunc}
 \end{figure}
-
-For various set representations, the support function is known analytically and can be efficiently evaluated numerically. Such cases include hyperrectangular sets and zonotopic sets.
-%
-For sets with less structure, e.g., if $\X$ is a polytope in half-space representation, its support function can be computed by solving a linear program (LP), for which fast and robust solvers exist.
-%
-But the main advantage of using the support function in LazySets lies in the extensive use of \emph{composition rules} as we describe next.
-
-\smallskip
 
 Consider again the set $\Omega_0$ from the previous section. Suppose that we are interested in the support value of $\Omega_0$ along a given direction $d \in \R^2$.
 %
 Since the support function distributes over the Minkowski sum, $\rho(d, \X \oplus \Y) = \rho(d, \X) + \rho(d, \Y)$ for any pair of sets $\X, \Y \subseteq \R^n$, and since it holds that $\rho(d, M \X) = \rho(M^T d, \X)$ for any matrix $M \in \R^{n \times n}$, we can propagate the computation through the operation tree until a concrete set is found, and in many cases, an analytic formula is available.
 %
-That is precisely what LazySets does, automatically, when we make queries to the lazy set such as asking for its support function along $d = (-1, 1)^T$.
+That is precisely what LazySets does, automatically, when we make queries to the lazy set such as asking for its support function along $d = (-1, 1)^T$ from before.
 
 \begin{minipage}{\linewidth}
 	\vspace{-\abovedisplayskip}
 	\begin{lstlisting}
-julia> d = [-1, 1]
-
 julia> @btime ρ($d, $Ω₀)
 117.236 ns (2 allocations: 192 bytes)
 -0.8
+
+julia> @btime ρ($d, concretize($Ω₀))
+  23.700 μs (203 allocations: 16.03 KiB)
+-0.8
 	\end{lstlisting}
 \end{minipage}
+
+In the first benchmark we evaluate the support function for the lazy set.
+In the second benchmark we evaluate the support function including the conversion to a concrete set representation (in this case a polygon in vertex representation).
+The first case is two orders of magnitude faster.
+This exemplifies that set computations can be implemented efficiently using the support function, which becomes more prominent in higher dimensions.
 
 \smallskip
 
