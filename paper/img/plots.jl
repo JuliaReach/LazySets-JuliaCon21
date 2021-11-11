@@ -229,13 +229,13 @@ solZ = set.(overapproximate(sol, Zonotope))
 writevtk(solZ, file="lorenz") # generates lorenz.vtu
 
 # ----------------------------
-# Linear taylor model
+# Linear Taylor model
 # ----------------------------
 
 using TaylorModels
 
 # In this example we show how to compute a zonotope which overapproximates
-# the range of the given taylor model. It should be noted that evaluation
+# the range of the given Taylor model. It should be noted that evaluation
 # that uses purely interval arithmetic methods is less precise, because
 # it doesn't store the information about linear dependencies as in the case of the
 # zonotope.
@@ -254,7 +254,7 @@ p1 = Taylor1([2.0, 1.0], 2) # define a linear polynomial
 p2 = Taylor1([0.9, 3.0], 2) # define another linear polynomial
 vTM = [TaylorModel1(pi, I, x₀, D) for pi in [p1, p2]] # define vector of Taylor models
 
-# Here, `vTM` is a taylor model vector, since each component is a taylor model in
+# Here, `vTM` is a Taylor model vector, since each component is a Taylor model in
 # one variable (`TaylorModel1`). Using `overapproximate(vTM, Zonotope)` we can
 # compute its associated zonotope in generator representation:
 
@@ -271,11 +271,12 @@ X = box_approximation(Z)
 Y = evaluate(vTM[1], vTM[1].dom) × evaluate(vTM[2], vTM[2].dom)
 H = convert(Hyperrectangle, Y) # this IntevalBox is the same as X
 
-# However, the zonotope returns better results if we want to approximate the `TM`,
+# However, the zonotope returns better results if we want to approximate the TM,
 # since it is not axis-aligned.
 
-# d = [-0.35, 0.93];
-# ρ(d, Z) < ρ(d, X)
+# d = [-0.35, 0.93]  # d ≈ normalize(d)
+# sfZ = ρ(d, Z)
+# sfH = ρ(d, X)
 
 fig =  p(xlim=(-2, 4), ylim=(-9, 5), ratio=.5,
            xlab=L"x_1", ylab=L"x_2",
@@ -295,7 +296,7 @@ plot!(fig, Z, lw=3., alpha=1, c=:green, linecolor=:red)
 savefig(fig, "taylormodel_linear.pdf")
 
 # ----------------------------
-# Non-linear taylor model
+# Non-linear Taylor model
 # ----------------------------
 
 # This function also works if the polynomials are non-linear; for example suppose
