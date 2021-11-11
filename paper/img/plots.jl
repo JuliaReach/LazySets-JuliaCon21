@@ -15,6 +15,7 @@ p!(args...; kwargs...) = plot!(lab="", args...; kwargs...);
 # utils for plots
 __toL(x, digits) = L"%$(round(x, digits=digits))"
 xticklatex(vec, digits) = (vec, __toL.(vec, Ref(digits)))
+Plots.GR.setarrowsize(3)  # larger arrow heads
 
 # -------------------
 # Suport function
@@ -22,7 +23,7 @@ xticklatex(vec, digits) = (vec, __toL.(vec, Ref(digits)))
 
 X = VPolygon([[0.8, 2.2], [2.1, 1], [1.9, -1], [0, -2],
               [-2, -2], [-3, 0.6], [-0.8, 1.8], [0.8, 2.2]])
-d = [-1, 1]
+d = [-1.0, 1.0]
 
 sv = @show σ(d, X)
 
@@ -117,11 +118,11 @@ plot!(fig, Ball2(zeros(2), 1.0), alpha=.5, ratio=1., lc=:black, lw=1, c=:lightbl
 
 # five directions
 plot!(fig, map(p -> LineSegment(zeros(2), p), PolarDirections(5)), lw=5.,
-               arrow=:true, alpha=1, markershape=:none, seriestype=:path, c=:green)
+               arrow=:simple, alpha=1, markershape=:none, seriestype=:path, c=:green)
 
 # three directions
 plot!(fig, map(p -> LineSegment(zeros(2), p), PolarDirections(3)), lw=5.,
-           arrow=:true, alpha=1, markershape=:none, seriestype=:path, c=:red, ls=:dot)
+           arrow=:simple, alpha=1, markershape=:none, seriestype=:path, c=:red, ls=:dot)
 
 savefig(fig, "polardirs.pdf")
 
