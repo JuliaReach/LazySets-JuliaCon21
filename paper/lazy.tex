@@ -122,7 +122,7 @@ julia> @btime ρ($d, concretize($Ω₀))
 	\end{lstlisting}
 \end{minipage}
 
-In the first benchmark we evaluate the support function on the lazy set.
+In the first benchmark we evaluate the support function on the lazy set.\footnote{The Julia macro \code{@btime} provided by the \href{https://github.com/JuliaCI/BenchmarkTools.jl}{BenchmarkTools.jl} package evaluates the given command multiple times and returns the smallest record.}
 In the second benchmark we first convert to a concrete set representation (in this case a polygon in vertex representation) and then evaluate the support function.
 The first case is two orders of magnitude faster.
 This exemplifies that set computations can be implemented efficiently using the support function, which becomes more prominent in higher dimensions.

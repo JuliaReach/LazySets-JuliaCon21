@@ -127,8 +127,7 @@ import LazySets.default_tolerance
 default_tolerance(::Type{<:ForwardDiff.Dual}) = default_tolerance(Float64)
 	\end{lstlisting}
 \end{minipage}
-With this code, the user could differentiate through the formula \code{area(intersection(X, Y))}, which computes the area of the intersection of sets $\X$ and $\Y$.
-
+With this code, the user could use automatic differentiation (AD) in the formula \code{area(intersection(X, Y))}, which computes the area of the intersection of sets $\X$ and $\Y$. More broadly, AD allows providing information to numerical methods around computational geometry, which is often used in robotics and machine learning~\cite{featherstone2014rigid,BaydinPRS17}.
 
 \subsection{Taylor models as an example of non-convex sets}\label{sec:taylormodels}
 
@@ -300,7 +299,7 @@ julia> @btime intersection($X, $Hsev)
 376.059 ns (13 allocations: 1.08 KiB)
 \end{lstlisting}
 \end{minipage}
-
+This example shows that a 100x speedup is obtained by exploiting structure encoded in the half-space's type.
 
 \subsection{Interoperability with other languages}\label{sec:python}
 
