@@ -1,5 +1,5 @@
 \begin{table*}[tb]
-	\tbl{Set operations available in LazySets. The result of the last three operations is generally not convex even if used with convex operands. For binary operations (marked with \binary{$\cdot$}) there is also an $n$-ary lazy version with the suffix \code{Array}, e.g., \code{MinkowskiSumArray}. Unicode symbols (as mentioned in the column ``Short form'') are entered in the Julia REPL by typing the \LaTeX\ command (e.g.: \code{\textbackslash{}oplus} for $\oplus$) followed by pressing the ``Tab'' key. See Appendix~\ref{sec:setops} for some central definitions.}{
+	\tbl{Set operations available in LazySets. The distinction between lazy and concrete functions is explained in Section~\ref{sec:lazy}. The result of the last three operations is generally not convex even if used with convex operands. For binary operations (marked with \binary{$\cdot$}) there is also an $n$-ary lazy version with the suffix \code{Array}, e.g., \code{MinkowskiSumArray}. Unicode symbols (as mentioned in the column ``Short form'') are entered in the Julia REPL by typing the \LaTeX\ command (e.g.: \code{\textbackslash{}oplus} for $\oplus$) followed by pressing the ``Tab'' key. See Appendix~\ref{sec:setops} for some central definitions.}{
 	\begin{tabular}{l l l l l}
 		\toprule
 		Operation name & Math form & Lazy function (constructor) & Short form & Concrete function \\
@@ -78,7 +78,7 @@ HalfSpace{Float64,Vector{Float64}}([1.0, 0.0], 1.0)
 \end{lstlisting}
 \end{minipage}
 %
-Higher-dimensional sets are defined in a similar fashion; for instance, the 100-dimensional half-space $x_1 + \ldots + x_{100} \leq 10$ is:
+Higher-dimensional sets are defined in a similar fashion; for instance, the 100-dimensional half-space $x_1 + \ldots + x_{100} \leq 10$ is:\footnote{Sometimes we abbreviate the output to improve readability.}
 %
 \begin{minipage}{\linewidth}
 \vspace{-\abovedisplayskip}
@@ -92,8 +92,13 @@ HalfSpace([1.0, ..., 1.0], 10.0)
 
 
 The most widely used convex sets in various disciplines are (convex) \emph{polyhedra}, which are characterized as the finite intersection of half-spaces.
+This is also known as the \emph{H-representation}.
+For bounded polyhedra, which are called \emph{polytope}, LazySets also supports a dual way to represent such sets in \emph{V-representation} as the convex hull of points.
+The functions \code{tohrep(X)} and \code{tovrep(X)} can be used to convert between these representations.
+
 Optimization over a polyhedron with linear objective corresponds to solving a linear program.
-In Fig.~\ref{fig:supfunc} we show an example of a \emph{polytope} (a bounded polyhedron) with seven (linear) constraints in orange and a half-space in blue.
+Linear programs can model a wide variety of real-life optimization problems and can be solved efficiently \cite{dantzig1998linear,kochenderfer2019algorithms}.
+On the left of Fig.~\ref{fig:supfunc} we show an example of a polytope in orange, with seven (linear) constraints, and a half-space in blue.
 
 \smallskip
 
@@ -130,6 +135,10 @@ true
 \end{minipage}
 
 Other typical properties that can be checked for sets $\X$ and $\Y$ are emptiness ($\X = \emptyset$; \code{isempty}), inclusion ($\X \subseteq \Y$; \code{issubset}), and having no point in common ($\X \cap \Y = \emptyset$; \code{isdisjoint}).
+The complexity of such operations depends on the representation of the set.
+Take for example a polyhedron represented by the list of its linear constraints.
+Emptiness can be checked by formulating a feasibility linear program.
+Inclusion and disjointness can be checked using the support function (see Section~\ref{sec:supfun}).
 
 \smallskip
 
@@ -198,6 +207,7 @@ We are working toward having non-convex sets, such as set unions, in the same ty
 We have seen that we can interact with sets by checking properties.
 Importantly, we can also apply set operations to sets for constructing new sets.
 (By default the result is a new set instance and the original set instance is not manipulated.)
+For details about the complexity for common set representations we refer to \cite[Table~1]{althoff2020set}.
 For example, one common set operation is to translate (or shift) every element in the set by a constant vector.
 
 \begin{minipage}{\linewidth}

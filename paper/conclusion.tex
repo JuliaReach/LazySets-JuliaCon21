@@ -1,5 +1,42 @@
 We conclude with a brief discussion of the past, present, and future development perspectives of LazySets.
 
+
+\subsection{Related libraries}
+
+There are few publicly available libraries with a similar aim as LazySets.
+%
+All these libraries are used in the context of reachability analysis.
+%
+\href{https://github.com/hypro/hypro}{HyPro} is a C++ library for concrete representation and manipulation of sets such as convex polytopes and Taylor models and also offers a support-function representation of set operations \cite{SchuppAMK17}.
+%
+\href{https://github.com/TUMcps/CORA}{CORA} is an actively developed Matlab library centered around zonotopes and contains implementations of zonotope bundles, matrix zonotopes, and polynomial zonotopes~\cite{Althoff15}.
+%
+The \href{https://github.com/SystemAnalysisDpt-CMC-MSU/ellipsoids}{ellipsoidal toolbox} is a Matlab library for ellipsoids \cite{kurzhanskiy2006ellipsoidal}.
+%
+\href{http://spaceex.imag.fr/}{SpaceEx} is a C++ reachability library that established the use of the support function in reachability analysis, but it is not open source \cite{frehse2011spaceex}.
+
+\smallskip
+
+Finally, we mention other related Julia packages with a different aim.
+% 
+As mentioned in Section~\ref{sec:applications}, \href{https://github.com/JuliaPolyhedra/Polyhedra.jl}{Polyhedra.jl} \cite{legat2021polyhedra} provides an interface for polyhedral computations and the double-description method; hence it complements nicely the lazy features available in our library.
+%
+\href{https://github.com/JuliaGeometry/GeometryBasics.jl}{GeometryBasics.jl} offers standard geometry types, creating a basis for graphics/plotting in Julia.
+%
+The more recent package
+\href{https://github.com/JuliaGeometry/Meshes.jl}{Meshes.jl} is specialized on efficient and pure-Julia implementations of computational geometry and meshing algorithms.
+%
+Another Julia package for describing domains in Euclidean space is \href{https://github.com/JuliaApproximation/DomainSets.jl}{DomainSets.jl}; this package is being adopted for modeling PDE (partial differential equation) domains with \href{https://github.com/SciML/ModelingToolkit.jl}{ModelingToolkit.jl}.
+%
+Optimization is another scientific field where sets play a major role, with great contributions from Julia developers.
+%
+\href{https://github.com/jump-dev/MathOptInterface.jl}{MathOptInterface.jl}
+\cite{MathOptInterface-2021} is at the core of \href{https://github.com/jump-dev/JuMP.jl}{JuMP.jl}~\cite{DunningHuchetteLubin2017}, Julia's mainstream modeling language for mathematical optimization.
+%
+Applications include set programming in \href{https://github.com/blegat/SetProg.jl}{SetProg.jl}
+and set distances in \href{https://github.com/jump-dev/MathOptSetDistances.jl}{MathOptSetDistances.jl}.
+
+
 \subsection{Origin of LazySets and current applications}
 
 LazySets has its origins in a tool for reachability analysis of linear dynamical systems, using a compositional approach based on reducing high-dimensional lazy set representations into a sequence of low-dimensional projections that can be computed efficiently~\cite{BogomolovFFVPS18}.
@@ -24,7 +61,7 @@ LazySets has also been applied to the challenging domain of hybrid systems (syst
 %
 Such problems require switching between different set representations and handling intersections efficiently and accurately.
 %
-Timed systems with non-deterministic events have been considered in \cite{forets2020efficient}; the approach is able to handle a large number of sets ($100$ million sets in zonotope representation), and it was shown to be an order of magnitude faster than competing tools~\cite{ARCHCOMP20LINEAR}.
+Timed systems with non-deterministic events have been considered in \cite{forets2020efficient}; the approach is able to handle a large number of sets ($100$ million sets in zonotope representation), and it was shown to be an order of magnitude faster than competing tools~\cite{ARCHCOMP20LINEAR} such as CORA and SpaceEx.
 
 \smallskip
 
@@ -33,40 +70,6 @@ Besides reachability analysis, LazySets can be used for other purposes. The tool
 %
 Other Julia packages using LazySets functionality include computation of invariant sets in \href{https://github.com/ueliwechsler/InvariantSets.jl}{InvariantSets.jl}, ray tracing for geometric optics in \href{https://github.com/microsoft/OpticSim.jl}{OpticSim.jl}, astronomical photometry in \href{https://github.com/JuliaAstro/Photometry.jl}{Photometry.jl}, thin film simulations in \href{https://github.com/Zitzeronion/Swalbe.jl}{Swalbe.jl}, and linear algebra with interval matrices in \href{https://github.com/JuliaIntervals/IntervalLinearAlgebra.jl}{IntervalLinearAlgebra.jl}.
 
-\subsection{Related libraries}
-
-There are few publicly available libraries with a similar aim as LazySets.
-%
-All these libraries are used in the context of reachability analysis.
-%
-HyPro is a C++ library for concrete representation and manipulation of sets such as convex polytopes and Taylor models and also offers a support-function representation of set operations \cite{SchuppAMK17}.
-%
-CORA is an actively developed Matlab library centered around zonotopes and contains implementations of zonotope bundles, matrix zonotopes, and polynomial zonotopes~\cite{Althoff15}.
-%
-The ellipsoidal toolbox is a Matlab library for ellipsoids \cite{kurzhanskiy2006ellipsoidal}.
-%
-SpaceEx is a C++ library that established the use of the support function in reachability analysis, but it is not open source \cite{frehse2011spaceex}.
-
-\smallskip
-
-Finally, we mention other related Julia packages with a different aim.
-% 
-As mentioned in Section~\ref{sec:applications}, \href{https://github.com/JuliaPolyhedra/Polyhedra.jl}{Polyhedra.jl} \cite{legat2021polyhedra} provides an interface for polyhedral computations and the double-description method; hence it complements nicely the lazy features available in our library.
-%
-\href{https://github.com/JuliaGeometry/GeometryBasics.jl}{GeometryBasics.jl} offers standard geometry types, creating a basis for graphics/plotting in Julia.
-%
-The more recent package
-\href{https://github.com/JuliaGeometry/Meshes.jl}{Meshes.jl} is specialized on efficient and pure-Julia implementations of computational geometry and meshing algorithms.
-%
-Another Julia package for describing domains in Euclidean space is \href{https://github.com/JuliaApproximation/DomainSets.jl}{DomainSets.jl}; this package is being adopted for modeling PDE (partial differential equation) domains with \href{https://github.com/SciML/ModelingToolkit.jl}{ModelingToolkit.jl}.
-%
-Optimization is another scientific field where sets play a major role, with great contributions from Julia developers.
-%
-\href{https://github.com/jump-dev/MathOptInterface.jl}{MathOptInterface.jl}
-\cite{MathOptInterface-2021} is at the core of \href{https://github.com/jump-dev/JuMP.jl}{JuMP.jl}~\cite{DunningHuchetteLubin2017}, Julia's mainstream modeling language for mathematical optimization.
-%
-Applications include set programming in \href{https://github.com/blegat/SetProg.jl}{SetProg.jl}
-and set distances in \href{https://github.com/jump-dev/MathOptSetDistances.jl}{MathOptSetDistances.jl}.
 
 \subsection{LazySets in numbers}
 
@@ -91,7 +94,7 @@ While many algorithms are already optimized, some functions still use a suboptim
 %
 We are interested to identify and fix such cases.
 %
-In our experience, one can often obtain speed-ups within several orders of magnitude by adding new methods.
+In our experience, one can often obtain speed-ups within several orders of magnitude by adding new methods for Julia's multiple dispatch, as we exemplified in Section~\ref{sec:custom_arrays} for the intersection of an axis-aligned half-space with a hyperrectangle.
 
 \smallskip
 
