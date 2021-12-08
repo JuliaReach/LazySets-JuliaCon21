@@ -61,7 +61,7 @@ fig =  p(xlim=(-2, 4), ylim=(-9, 5), ratio=.5,
            ytick = ([-8, -4, 0, 4, 8], [L"-8", L"-4", L"0", L"4", L"8"]),
            bottom_margin=0mm, left_margin=0mm, right_margin=0mm, top_margin=0mm, size=(380, 380))
 
-plot!(fig, H, alpha=.5, lc=:black, lw=1., c=:lightblue)
+plot!(fig, H, alpha=.5, lc=:black, lw=1.5, c=:lightblue, ls=:dash)
 
 plot!(fig, Z, lw=3., alpha=1, c=:green, linecolor=:red)
 
@@ -96,7 +96,7 @@ fig =  p(xlim=(-2, 4), ylim=(-9, 5), ratio=.1,
            ytick = ([0, 15, 30], [L"0", L"15", L"30"]),
            bottom_margin=0mm, left_margin=0mm, right_margin=0mm, top_margin=0mm, size=(380, 300))
 
-plot!(fig, Hnl, alpha=.5, lc=:black, lw=1., c=:lightblue)
+plot!(fig, Hnl, alpha=.5, lc=:black, lw=1.5, c=:lightblue, ls=:dash)
 
 plot!(fig, Znl, lw=1., alpha=1, c=:green)
 

@@ -83,9 +83,13 @@ julia> length(constraints_list(Xoct))
 \end{lstlisting}
 \end{minipage}
 
-In two dimensions (or the projection of a higher-dimensional set into two dimensions), LazySets can compute $\varepsilon$-close overapproximations via \code{overapproximate(X, $\varepsilon$)}, where $\varepsilon$ is the specified tolerance.
+In two dimensions, LazySets can compute $\varepsilon$-close overapproximations using a method by Kamenev~\cite{kamenev1996algorithm} later refined in~\cite{lotov2008modified}.
 %
-Such overapproximations generally yield an \code{HPolytope} if $\X$ is bounded.
+It is used via \code{overapproximate(X, $\varepsilon$)}, where $\varepsilon$ is the specified tolerance.
+%
+The higher-dimensional extension is not implemented yet.
+%
+On the other hand, higher-dimensional set can be lazily projected using the support function to a lower-dimensional subspace, where the available method applies.
 
 \smallskip
 
